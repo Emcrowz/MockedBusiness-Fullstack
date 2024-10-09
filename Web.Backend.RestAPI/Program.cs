@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Core;
 using Utilities.Constants;
+using Web.Backend.RestAPI.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +15,10 @@ Logger log = new LoggerConfiguration()
     .CreateLogger();
 Log.Logger = log;
 
-// Add services to the container.
+builder.Services.AddDbContext<EducationDbContext>(options => options.UseSqlServer(config.GetConnectionString(Connections.EFCORE)));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -41,7 +43,6 @@ else
 
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
