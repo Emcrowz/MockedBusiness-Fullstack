@@ -24,7 +24,8 @@ Currently project has no theme or idea. While developing database for the projec
 
 ## Roadmap
 
-- Pointers for the development stages and objectives...
+- Develop a database for the project (entity and model representation diagram)
+- Create a API service module for the Blazor UI to interact with data via API
 
 ## Lessons Learned
 
