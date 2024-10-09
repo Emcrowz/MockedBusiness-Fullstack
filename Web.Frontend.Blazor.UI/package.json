@@ -1,0 +1,16 @@
+{
+  "name": "web.frontend.blazor.ui",
+  "version": "1.0.0",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "build": "tailwindcss -i ./TailwindCSS/tailwind.css -o ./wwwroot/css/tailwind.css",
+    "watch": "tailwindcss -i ./TailwindCSS/tailwind.css -o ./wwwroot/css/tailwind.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "tailwindcss": "^3.4.13"
+  }
+}
