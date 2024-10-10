@@ -1,107 +1,141 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Web.Backend.Domain.Models.Education;
-using Web.Backend.RestAPI.Data;
+using Serilog;
+using Utilities.Constants;
+using Web.Backend.Domain.DTO.Education;
+using Web.Backend.Domain.Repositories.Contracts;
 
 namespace Web.Backend.RestAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CoursesController(EducationDbContext context) : ControllerBase
+public class CoursesController(ICoursesRepository repository) : ControllerBase
 {
-    // GET: api/Courses
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+    public async Task<ActionResult<IEnumerable<CourseReadDto>>> GetCourseAsync()
     {
-        return await context.Courses.ToListAsync();
-    }
+        string reqType = Requests.GET;
+        string methodName = nameof(GetCourseAsync);
 
-    // GET: api/Courses/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Course>> GetCourse(string id)
-    {
-        var course = await context.Courses.FindAsync(id);
-
-        if (course == null)
+        try
         {
-            return NotFound();
+            IEnumerable<CourseReadDto> data = await repository.GetAsync();
+
+            Log.Information(LoggingMessage.Success(reqType, methodName));
+            return Ok(data);
         }
-
-        return course;
+        catch
+        {
+            Log.Error(LoggingMessage.Failure(reqType, methodName));
+            return Problem(LoggingMessage.Failure(reqType, methodName), statusCode: 500);
+        }
     }
 
-    // PUT: api/Courses/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutCourse(string id, Course course)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CourseReadDto>> GetCourseAsync(string id)
     {
-        if (id != course.Id)
+        string reqType = Requests.GET;
+        string methodName = nameof(GetCourseAsync);
+
+        if (string.IsNullOrWhiteSpace(id))
         {
+            Log.Warning(LoggingMessage.BadRequest(reqType, methodName, id));
             return BadRequest();
         }
 
-        context.Entry(course).State = EntityState.Modified;
+        CourseReadDto? data = await repository.GetAsync(id);
 
-        try
+        if (data is null)
         {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!CourseExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
-    // POST: api/Courses
-    [HttpPost]
-    public async Task<ActionResult<Course>> PostCourse(Course course)
-    {
-        context.Courses.Add(course);
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            if (CourseExists(course.Id))
-            {
-                return Conflict();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return CreatedAtAction("GetCourse", new { id = course.Id }, course);
-    }
-
-    // DELETE: api/Courses/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCourse(string id)
-    {
-        var course = await context.Courses.FindAsync(id);
-        if (course == null)
-        {
+            Log.Warning(LoggingMessage.NotFound(reqType, methodName, id));
             return NotFound();
         }
 
-        context.Courses.Remove(course);
-        await context.SaveChangesAsync();
-
-        return NoContent();
+        Log.Information(LoggingMessage.Success(reqType, methodName, id));
+        return Ok(data);
     }
 
-    private bool CourseExists(string id)
+    [HttpPost]
+    public async Task<IActionResult> PostCourseAsync([FromBody] CourseCreateDto newModel)
     {
-        return context.Courses.Any(e => e.Id == id);
+        string reqType = Requests.POST;
+        string methodName = nameof(PostCourseAsync);
+
+        if (newModel is null)
+        {
+            Log.Warning(LoggingMessage.BadRequest(reqType, methodName));
+            return BadRequest();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            Log.Warning(LoggingMessage.BadRequest(reqType, methodName));
+            return BadRequest();
+        }
+
+        if(await repository.AddAsync(newModel))
+        {
+            Log.Information(LoggingMessage.Success(reqType, methodName));
+            return Ok();
+        }
+        else
+        {
+            Log.Error(LoggingMessage.Failure(reqType, methodName));
+            return Problem(LoggingMessage.Failure(reqType, methodName), statusCode: 500);
+
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutCourseCourse(string id, [FromBody] CourseUpdateDto updateModel)
+    {
+        string reqType = Requests.PUT;
+        string methodName = nameof(PutCourseCourse);
+
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            Log.Warning(LoggingMessage.BadRequest(reqType, methodName, id));
+            return BadRequest();
+        }
+
+        if (id != updateModel.Id)
+        {
+            Log.Warning(LoggingMessage.BadRequest(reqType, methodName, id));
+            return BadRequest();
+        }
+
+        if(await repository.UpdateAsync(id, updateModel))
+        {
+            Log.Information(LoggingMessage.Success(reqType, methodName, id));
+            return Ok();
+        }
+        else
+        {
+            Log.Error(LoggingMessage.Failure(reqType, methodName));
+            return Problem(LoggingMessage.Failure(reqType, methodName), statusCode: 500);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCourseAsync(string id)
+    {
+        string reqType = Requests.DELETE;
+        string methodName = nameof(DeleteCourseAsync);
+
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            Log.Warning(LoggingMessage.BadRequest(reqType, methodName, id));
+            return BadRequest();
+        }
+
+        if (await repository.DeleteAsync(id))
+        {
+            Log.Information(LoggingMessage.Success(reqType, methodName, id));
+            return Ok();
+        }
+        else
+        {
+            Log.Warning(LoggingMessage.NotFound(reqType, methodName, id));
+            return NotFound();
+        }
     }
 }

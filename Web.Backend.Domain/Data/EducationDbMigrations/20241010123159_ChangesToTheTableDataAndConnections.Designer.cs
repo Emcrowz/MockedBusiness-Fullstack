@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Web.Backend.RestAPI.Data;
+using Web.Backend.Domain.Data;
 
 #nullable disable
 
-namespace Web.Backend.RestAPI.Data.EducationDbMigrations
+namespace Web.Backend.Domain.Data.EducationDbMigrations
 {
     [DbContext(typeof(EducationDbContext))]
-    [Migration("20241009180047_TableUpdatesTwo")]
-    partial class TableUpdatesTwo
+    [Migration("20241010123159_ChangesToTheTableDataAndConnections")]
+    partial class ChangesToTheTableDataAndConnections
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,56 +25,9 @@ namespace Web.Backend.RestAPI.Data.EducationDbMigrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Web.Backend.Domain.Models.Education.Course", b =>
+            modelBuilder.Entity("Web.Backend.Domain.Models.Education.Assignment", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AssignmentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("Web.Backend.Domain.Models.Users.Assignment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CourseId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -87,15 +40,55 @@ namespace Web.Backend.RestAPI.Data.EducationDbMigrations
                     b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("StudentId");
 
-                    b.ToTable("Assignments");
+                    b.ToTable("Assignment");
+                });
+
+            modelBuilder.Entity("Web.Backend.Domain.Models.Education.Course", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("ReleaseDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("UpdateDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("Web.Backend.Domain.Models.Users.Student", b =>
@@ -105,6 +98,10 @@ namespace Web.Backend.RestAPI.Data.EducationDbMigrations
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
+
+                    b.Property<string>("AssignmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CourseId")
                         .HasColumnType("nvarchar(max)");
@@ -154,9 +151,16 @@ namespace Web.Backend.RestAPI.Data.EducationDbMigrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("Web.Backend.Domain.Models.Education.Assignment", b =>
+                {
+                    b.HasOne("Web.Backend.Domain.Models.Users.Student", null)
+                        .WithMany("Assignments")
+                        .HasForeignKey("StudentId");
+                });
+
             modelBuilder.Entity("Web.Backend.Domain.Models.Education.Course", b =>
                 {
-                    b.HasOne("Web.Backend.Domain.Models.Users.Student", "Student")
+                    b.HasOne("Web.Backend.Domain.Models.Users.Student", null)
                         .WithMany("Courses")
                         .HasForeignKey("StudentId");
 
@@ -164,16 +168,7 @@ namespace Web.Backend.RestAPI.Data.EducationDbMigrations
                         .WithMany("Courses")
                         .HasForeignKey("TeacherId");
 
-                    b.Navigation("Student");
-
                     b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("Web.Backend.Domain.Models.Users.Assignment", b =>
-                {
-                    b.HasOne("Web.Backend.Domain.Models.Education.Course", null)
-                        .WithMany("Assignments")
-                        .HasForeignKey("CourseId");
                 });
 
             modelBuilder.Entity("Web.Backend.Domain.Models.Users.Student", b =>
@@ -183,13 +178,10 @@ namespace Web.Backend.RestAPI.Data.EducationDbMigrations
                         .HasForeignKey("TeacherId");
                 });
 
-            modelBuilder.Entity("Web.Backend.Domain.Models.Education.Course", b =>
-                {
-                    b.Navigation("Assignments");
-                });
-
             modelBuilder.Entity("Web.Backend.Domain.Models.Users.Student", b =>
                 {
+                    b.Navigation("Assignments");
+
                     b.Navigation("Courses");
                 });
 

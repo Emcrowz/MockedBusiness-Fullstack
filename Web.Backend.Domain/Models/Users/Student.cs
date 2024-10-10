@@ -5,6 +5,6 @@ namespace Web.Backend.Domain.Models.Users;
 
 public class Student : User
 {
-    public string? CourseId { get; set; }
-    public List<Course>? Courses { get; set; }
+    public string? AssignmentId { get; set; }
+    public List<Assignment>? Assignments { get; set; }
 }

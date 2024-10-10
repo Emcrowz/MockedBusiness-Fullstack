@@ -2,7 +2,7 @@
 using Web.Backend.Domain.Models.Education;
 using Web.Backend.Domain.Models.Users;
 
-namespace Web.Backend.RestAPI.Data;
+namespace Web.Backend.Domain.Data;
 
 public class EducationDbContext(DbContextOptions<EducationDbContext> options) : DbContext(options)
 {

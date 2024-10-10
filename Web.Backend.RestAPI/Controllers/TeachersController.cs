@@ -1,24 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Utilities.Constants;
-using Web.Backend.Domain.DTO.Education;
+using Web.Backend.Domain.DTO.Users;
 using Web.Backend.Domain.Repositories.Contracts;
 
 namespace Web.Backend.RestAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AssignmentsController(IAssignmentsRepository repository) : ControllerBase
+public class TeachersController(ITeachersRepository repository) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AssignmentReadDto>>> GetAssignmentsAsync()
+    public async Task<ActionResult<IEnumerable<TeacherReadDto>>> GetTeacherAsync()
     {
         string reqType = Requests.GET;
-        string methodName = nameof(GetAssignmentsAsync);
+        string methodName = nameof(GetTeacherAsync);
 
         try
         {
-            IEnumerable<AssignmentReadDto> data = await repository.GetAsync();
+            IEnumerable<TeacherReadDto> data = await repository.GetAsync();
 
             Log.Information(LoggingMessage.Success(reqType, methodName));
             return Ok(data);
@@ -31,10 +31,10 @@ public class AssignmentsController(IAssignmentsRepository repository) : Controll
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<AssignmentReadDto>> GetAssignmentAsync(string id)
+    public async Task<ActionResult<TeacherReadDto>> GetTeacherAsync(string id)
     {
         string reqType = Requests.GET;
-        string methodName = nameof(GetAssignmentsAsync);
+        string methodName = nameof(GetTeacherAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -42,23 +42,23 @@ public class AssignmentsController(IAssignmentsRepository repository) : Controll
             return BadRequest();
         }
 
-        AssignmentReadDto? data = await repository.GetAsync(id);
+        TeacherReadDto? data = await repository.GetAsync(id);
 
         if (data is null)
         {
             Log.Warning(LoggingMessage.NotFound(reqType, methodName, id));
             return NotFound();
         }
-
+        
         Log.Information(LoggingMessage.Success(reqType, methodName, id));
         return Ok(data);
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostAssignmentAsync(AssignmentCreateDto newModel)
+    public async Task<IActionResult> PostTeacherAsync([FromBody] TeacherCreateDto newModel)
     {
         string reqType = Requests.POST;
-        string methodName = nameof(PostAssignmentAsync);
+        string methodName = nameof(PostTeacherAsync);
 
         if (newModel is null)
         {
@@ -85,10 +85,10 @@ public class AssignmentsController(IAssignmentsRepository repository) : Controll
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAssignmentAsync(string id, [FromBody] AssignmentUpdateDto updateModel)
+    public async Task<IActionResult> PutTeacherAsync(string id, [FromBody] TeacherUpdateDto updateModel)
     {
         string reqType = Requests.PUT;
-        string methodName = nameof(PutAssignmentAsync);
+        string methodName = nameof(PutTeacherAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -102,7 +102,7 @@ public class AssignmentsController(IAssignmentsRepository repository) : Controll
             return BadRequest();
         }
 
-        if (await repository.UpdateAsync(id, updateModel))
+        if(await repository.UpdateAsync(id, updateModel))
         {
             Log.Information(LoggingMessage.Success(reqType, methodName, id));
             return Ok();
@@ -115,10 +115,10 @@ public class AssignmentsController(IAssignmentsRepository repository) : Controll
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAssignmentAsync(string id)
+    public async Task<IActionResult> DeleteTeacherAsync(string id)
     {
         string reqType = Requests.DELETE;
-        string methodName = nameof(DeleteAssignmentAsync);
+        string methodName = nameof(DeleteTeacherAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {

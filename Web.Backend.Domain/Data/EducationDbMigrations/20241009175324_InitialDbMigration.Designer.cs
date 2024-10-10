@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Web.Backend.RestAPI.Data;
+using Web.Backend.Domain.Data;
 
 #nullable disable
 
-namespace Web.Backend.RestAPI.Data.EducationDbMigrations
+namespace Web.Backend.Domain.Data.EducationDbMigrations
 {
     [DbContext(typeof(EducationDbContext))]
     [Migration("20241009175324_InitialDbMigration")]

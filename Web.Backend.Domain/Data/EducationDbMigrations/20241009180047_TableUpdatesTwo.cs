@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Web.Backend.RestAPI.Data.EducationDbMigrations
+namespace Web.Backend.Domain.Data.EducationDbMigrations
 {
     /// <inheritdoc />
     public partial class TableUpdatesTwo : Migration
