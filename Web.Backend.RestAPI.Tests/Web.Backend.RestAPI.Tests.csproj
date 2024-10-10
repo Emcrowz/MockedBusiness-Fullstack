@@ -25,11 +25,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Web.Backend.Domain\Web.Backend.Domain.csproj" />
     <ProjectReference Include="..\Web.Backend.RestAPI\Web.Backend.RestAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

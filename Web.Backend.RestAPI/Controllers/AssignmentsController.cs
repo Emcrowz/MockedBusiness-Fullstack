@@ -11,10 +11,10 @@ namespace Web.Backend.RestAPI.Controllers;
 public class AssignmentsController(IAssignmentsRepository repository) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AssignmentReadDto>>> GetAssignmentsAsync()
+    public async Task<ActionResult<IEnumerable<AssignmentReadDto>>> GetAssignmentAsync()
     {
         string reqType = Requests.GET;
-        string methodName = nameof(GetAssignmentsAsync);
+        string methodName = nameof(GetAssignmentAsync);
 
         try
         {
@@ -34,7 +34,7 @@ public class AssignmentsController(IAssignmentsRepository repository) : Controll
     public async Task<ActionResult<AssignmentReadDto>> GetAssignmentAsync(string id)
     {
         string reqType = Requests.GET;
-        string methodName = nameof(GetAssignmentsAsync);
+        string methodName = nameof(GetAssignmentAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {
