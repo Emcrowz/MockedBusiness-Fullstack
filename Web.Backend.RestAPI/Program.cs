@@ -22,8 +22,6 @@ Log.Logger = log;
 string? connectionString = config.GetConnectionString(Connections.POSTGRES);
 builder.Services.AddDbContext<EducationDbContext>(options => options.UseNpgsql(connectionString));
 
-builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
-
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -50,6 +48,8 @@ else
             });
     });
 }
+
+builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 
 WebApplication app = builder.Build();
 

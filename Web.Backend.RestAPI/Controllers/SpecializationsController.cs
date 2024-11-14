@@ -11,30 +11,24 @@ namespace Web.Backend.RestAPI.Controllers;
 public class SpecializationsController(ISpecializationRepository repository) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Specialization>>> GetAssignmentAsync()
+    public async Task<ActionResult<IEnumerable<Specialization>>> GetSpecializationsAsync()
     {
         string reqType = Requests.GET;
-        string methodName = nameof(GetAssignmentAsync);
+        string methodName = nameof(GetSpecializationsAsync);
 
-        try
-        {
-            IEnumerable<Specialization> data = await repository.GetAsync();
+        IEnumerable<Specialization> data = await repository.GetAllAsync();
 
-            Log.Information(LoggingMessages.Success(reqType, methodName));
-            return Ok(data);
-        }
-        catch
-        {
-            Log.Error(LoggingMessages.Failure(reqType, methodName));
-            return Problem(LoggingMessages.Failure(reqType, methodName), statusCode: 500);
-        }
+        Log.Information(LoggingMessages.Success(reqType, methodName));
+        return Ok(data);
+
+        // return Problem(LoggingMessages.Failure(reqType, methodName), statusCode: 500)
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Specialization>> GetAssignmentAsync(string id)
+    public async Task<ActionResult<Specialization>> GetSpecializationsAsync(string id)
     {
         string reqType = Requests.GET;
-        string methodName = nameof(GetAssignmentAsync);
+        string methodName = nameof(GetSpecializationsAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -42,7 +36,7 @@ public class SpecializationsController(ISpecializationRepository repository) : C
             return BadRequest();
         }
 
-        Specialization? data = await repository.GetAsync(id);
+        Specialization? data = await repository.GetSingleAsync(id);
 
         if (data is null)
         {
@@ -55,10 +49,10 @@ public class SpecializationsController(ISpecializationRepository repository) : C
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostAssignmentAsync(Specialization newModel)
+    public async Task<IActionResult> PostSpecializationAsync(Specialization newModel)
     {
         string reqType = Requests.POST;
-        string methodName = nameof(PostAssignmentAsync);
+        string methodName = nameof(PostSpecializationAsync);
 
         if (newModel is null)
         {
@@ -71,24 +65,25 @@ public class SpecializationsController(ISpecializationRepository repository) : C
             Log.Warning(LoggingMessages.BadRequest(reqType, methodName));
             return BadRequest();
         }
-
-        if (await repository.AddAsync(newModel))
+        
+        try
         {
+            await repository.AddAsync(newModel);
             Log.Information(LoggingMessages.Success(reqType, methodName));
             return Ok();
         }
-        else
+        catch (Exception e)
         {
-            Log.Error(LoggingMessages.Failure(reqType, methodName));
-            return Problem(LoggingMessages.Failure(reqType, methodName), statusCode: 500);
+            Log.Error(LoggingMessages.Failure(reqType, methodName, e.Message));
+            return Problem(LoggingMessages.Failure(reqType, methodName, e.Message), statusCode: 500);
         }
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAssignmentAsync(string id, [FromBody] Specialization updateModel)
+    public async Task<IActionResult> PutSpecializationAsync(string id, [FromBody] Specialization updateModel)
     {
         string reqType = Requests.PUT;
-        string methodName = nameof(PutAssignmentAsync);
+        string methodName = nameof(PutSpecializationAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -102,12 +97,13 @@ public class SpecializationsController(ISpecializationRepository repository) : C
             return BadRequest();
         }
 
-        if (await repository.UpdateAsync(id, updateModel))
+        try
         {
+            await repository.UpdateAsync(updateModel);
             Log.Information(LoggingMessages.Success(reqType, methodName, id));
             return Ok();
         }
-        else
+        catch (Exception e)
         {
             Log.Error(LoggingMessages.Failure(reqType, methodName));
             return Problem(LoggingMessages.Failure(reqType, methodName), statusCode: 500);
@@ -115,10 +111,10 @@ public class SpecializationsController(ISpecializationRepository repository) : C
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAssignmentAsync(string id)
+    public async Task<IActionResult> DeleteSpecializationAsync(string id)
     {
         string reqType = Requests.DELETE;
-        string methodName = nameof(DeleteAssignmentAsync);
+        string methodName = nameof(DeleteSpecializationAsync);
 
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -126,12 +122,13 @@ public class SpecializationsController(ISpecializationRepository repository) : C
             return BadRequest();
         }
 
-        if (await repository.DeleteAsync(id))
+        try
         {
+            await repository.DeleteAsync(id);
             Log.Information(LoggingMessages.Success(reqType, methodName, id));
             return Ok();
         }
-        else
+        catch (Exception e)
         {
             Log.Warning(LoggingMessages.NotFound(reqType, methodName, id));
             return NotFound();
