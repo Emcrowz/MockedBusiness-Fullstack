@@ -19,13 +19,8 @@ Logger log = new LoggerConfiguration()
 Log.Logger = log;
 
 // EFCore
-string? connectionString = config.GetConnectionString(Connections.EFCORE);
+string? connectionString = config.GetConnectionString(Connections.POSTGRES);
 builder.Services.AddDbContext<EducationDbContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
-builder.Services.AddScoped<ITeachersRepository, TeachersRepository>();
-builder.Services.AddScoped<IAssignmentsRepository, AssignmentsRepository>();
-builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
 
 builder.Services.AddControllers();
 
@@ -49,10 +44,12 @@ else
             Policies.CORS_PRODUCTION,
             policy =>
             {
-                policy.WithOrigins(@"http://localhost:7000").AllowAnyHeader().AllowAnyMethod();
+                policy.WithOrigins(@"http://localhost:8061").AllowAnyHeader().AllowAnyMethod();
             });
     });
 }
+
+builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 
 WebApplication app = builder.Build();
 

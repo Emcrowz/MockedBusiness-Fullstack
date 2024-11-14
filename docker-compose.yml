@@ -1,0 +1,35 @@
+services:
+  web.backend.restapi:
+    image: ${DOCKER_REGISTRY-}webbackendrestapi
+    build:
+      context: .
+      dockerfile: Web.Backend.RestAPI/Dockerfile
+    ports:
+      - "8041:8041"
+    environment:
+      - ASPNETCORE_URLS=http://*:8041
+    depends_on: 
+      - mssqldb
+    
+  web.frontend.Blazor.UI:
+    image: ${DOCKER_REGISTRY-}webfrontendblazorui
+    build:
+      context: .
+      dockerfile: Web.Frontend.Blazor.UI/Dockerfile
+    ports:
+      - "8061:8061"
+    environment:
+      - ASPNETCORE_URLS=http://*:8061
+    depends_on: 
+      - web.backend.restapi
+
+  mssqldb:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: MSSQLEducationDb
+    hostname: mssqleducationdb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=9Afe_9ceed
+    restart: unless-stopped
+    ports:
+      - "8000:1433" 
