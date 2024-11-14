@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Web.Backend.Domain.Data.EducationDbMigrations
 {
     /// <inheritdoc />
-    public partial class InitialDbMigrationToPostgre : Migration
+    public partial class InitialProjectMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +16,8 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    InstitutionId = table.Column<string>(type: "text", nullable: true),
-                    CourseId = table.Column<string>(type: "text", nullable: true)
+                    InstitutionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CourseId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,12 +29,12 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    StudentId = table.Column<string>(type: "text", nullable: true),
-                    SpecializationSessionId = table.Column<string>(type: "text", nullable: true),
+                    StudentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecializationSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EnrollmentDate = table.Column<DateOnly>(type: "DATE", nullable: false),
-                    StatusId = table.Column<string>(type: "text", nullable: true),
+                    StatusId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusDate = table.Column<DateOnly>(type: "DATE", nullable: true),
-                    FinalGrade = table.Column<double>(type: "numeric(5,2)", nullable: true),
+                    FinalGrade = table.Column<decimal>(type: "DECIMAL(5,2)", nullable: true),
                     CertificateId = table.Column<string>(type: "TEXT", nullable: true),
                     CertificateLocation = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -48,8 +48,8 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    LecturerId = table.Column<string>(type: "text", nullable: true),
-                    CourseId = table.Column<string>(type: "text", nullable: true)
+                    LecturerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CourseId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,8 +61,8 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    LecturerId = table.Column<string>(type: "text", nullable: true),
-                    SpecializationId = table.Column<string>(type: "text", nullable: true)
+                    LecturerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecializationId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,8 +74,8 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    InstitutionId = table.Column<string>(type: "text", nullable: true),
-                    SpecializationId = table.Column<string>(type: "text", nullable: true)
+                    InstitutionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecializationId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,13 +87,13 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    MaterialId = table.Column<string>(type: "text", nullable: true),
-                    EnrolledCourseId = table.Column<string>(type: "text", nullable: true),
-                    Attempt = table.Column<int>(type: "integer", nullable: false),
+                    MaterialId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EnrolledCourseId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Attempt = table.Column<int>(type: "int", nullable: false),
                     AttemptLink = table.Column<string>(type: "TEXT", nullable: true),
-                    Started = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
-                    Ended = table.Column<DateTime>(type: "TIMESTAMP", nullable: true),
-                    Score = table.Column<int>(type: "integer", nullable: true)
+                    Started = table.Column<byte[]>(type: "TIMESTAMP", nullable: false),
+                    Ended = table.Column<DateTime>(type: "DATETIME", nullable: true),
+                    Score = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,7 +108,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                     FirstName = table.Column<string>(type: "VARCHAR(64)", nullable: false),
                     LastName = table.Column<string>(type: "VARCHAR(64)", nullable: false),
                     Title = table.Column<string>(type: "VARCHAR(32)", nullable: true),
-                    InstitutionId = table.Column<string>(type: "text", nullable: true),
+                    InstitutionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OnCourseId = table.Column<string>(type: "VARCHAR(255)", nullable: true),
                     OnSpecializationId = table.Column<string>(type: "VARCHAR(255)", nullable: true)
                 },
@@ -132,12 +132,12 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    StudentId = table.Column<string>(type: "text", nullable: true),
-                    CourseSessionId = table.Column<string>(type: "text", nullable: true),
+                    StudentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CourseSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EnrollmentDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    StatusId = table.Column<string>(type: "text", nullable: true),
+                    StatusId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusDate = table.Column<DateOnly>(type: "DATE", nullable: true),
-                    FinalGrade = table.Column<decimal>(type: "numeric(5,2)", nullable: true),
+                    FinalGrade = table.Column<decimal>(type: "DECIMAL(5,2)", nullable: true),
                     CertificateId = table.Column<string>(type: "TEXT", nullable: true),
                     CertificateLocation = table.Column<string>(type: "TEXT", nullable: true),
                     StudentResultsId = table.Column<string>(type: "VARCHAR(255)", nullable: true)
@@ -157,12 +157,12 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    ChapterId = table.Column<string>(type: "text", nullable: true),
-                    MaterialNumber = table.Column<int>(type: "integer", nullable: false),
-                    MaterialTypeId = table.Column<string>(type: "text", nullable: true),
+                    ChapterId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MaterialNumber = table.Column<int>(type: "int", nullable: false),
+                    MaterialTypeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MaterialLink = table.Column<string>(type: "TEXT", nullable: false),
-                    IsMandatory = table.Column<bool>(type: "boolean", nullable: false),
-                    MaxPoints = table.Column<int>(type: "integer", nullable: false),
+                    IsMandatory = table.Column<bool>(type: "bit", nullable: false),
+                    MaxPoints = table.Column<int>(type: "int", nullable: false),
                     StudentResultsId = table.Column<string>(type: "VARCHAR(255)", nullable: true)
                 },
                 constraints: table =>
@@ -195,7 +195,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         principalTable: "CourseCreatedBy",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Institutions_SpecializationCreatedBy_SpecializationCreatedB~",
+                        name: "FK_Institutions_SpecializationCreatedBy_SpecializationCreatedById",
                         column: x => x.SpecializationCreatedById,
                         principalTable: "SpecializationCreatedBy",
                         principalColumn: "Id");
@@ -211,10 +211,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    CourseId = table.Column<string>(type: "text", nullable: true),
+                    CourseId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDate = table.Column<DateOnly>(type: "DATE", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "DATE", nullable: false),
-                    SpecializationSessionId = table.Column<string>(type: "text", nullable: true),
+                    SpecializationSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EnrolledCourseId = table.Column<string>(type: "VARCHAR(255)", nullable: true)
                 },
                 constraints: table =>
@@ -282,8 +282,8 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    CourseId = table.Column<string>(type: "text", nullable: true),
-                    Number = table.Column<int>(type: "integer", nullable: false),
+                    CourseId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Number = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     MaterialId = table.Column<string>(type: "VARCHAR(255)", nullable: true)
                 },
@@ -320,7 +320,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
-                    SpecializationId = table.Column<string>(type: "text", nullable: true),
+                    SpecializationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDate = table.Column<DateOnly>(type: "DATE", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "DATE", nullable: false),
                     CourseSessionId = table.Column<string>(type: "VARCHAR(255)", nullable: true),
@@ -335,7 +335,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         principalTable: "CourseSessions",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_SpecializationSessions_EnrolledSpecializations_EnrolledSpec~",
+                        name: "FK_SpecializationSessions_EnrolledSpecializations_EnrolledSpecializationId",
                         column: x => x.EnrolledSpecializationId,
                         principalTable: "EnrolledSpecializations",
                         principalColumn: "Id");
@@ -349,10 +349,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                     Name = table.Column<string>(type: "VARCHAR(255)", nullable: false),
                     Commitment = table.Column<string>(type: "VARCHAR(255)", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    MinGrade = table.Column<decimal>(type: "numeric(5,2)", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(8,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    SpecializationId = table.Column<string>(type: "text", nullable: true),
+                    MinGrade = table.Column<decimal>(type: "DECIMAL(5,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "DECIMAL(8,2)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    SpecializationId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReleaseDate = table.Column<DateOnly>(type: "date", nullable: false),
                     UpdateDate = table.Column<DateOnly>(type: "date", nullable: false),
                     ChapterId = table.Column<string>(type: "VARCHAR(255)", nullable: true),
@@ -392,8 +392,8 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                     Id = table.Column<string>(type: "VARCHAR(255)", nullable: false),
                     Name = table.Column<string>(type: "VARCHAR(255)", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    SpecializationDiscount = table.Column<decimal>(type: "numeric(8,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    SpecializationDiscount = table.Column<decimal>(type: "DECIMAL(8,2)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CourseId = table.Column<string>(type: "VARCHAR(255)", nullable: true),
                     OnSpecializationId = table.Column<string>(type: "VARCHAR(255)", nullable: true),
                     SpecializationCreatedById = table.Column<string>(type: "VARCHAR(255)", nullable: true),
@@ -413,12 +413,12 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         principalTable: "OnSpecializations",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Specializations_SpecializationCreatedBy_SpecializationCreat~",
+                        name: "FK_Specializations_SpecializationCreatedBy_SpecializationCreatedById",
                         column: x => x.SpecializationCreatedById,
                         principalTable: "SpecializationCreatedBy",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Specializations_SpecializationSessions_SpecializationSessio~",
+                        name: "FK_Specializations_SpecializationSessions_SpecializationSessionId",
                         column: x => x.SpecializationSessionId,
                         principalTable: "SpecializationSessions",
                         principalColumn: "Id");

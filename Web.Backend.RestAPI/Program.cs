@@ -20,7 +20,7 @@ Log.Logger = log;
 
 // EFCore
 string? connectionString = config.GetConnectionString(Connections.POSTGRES);
-builder.Services.AddDbContext<EducationDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<EducationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 
@@ -44,7 +44,7 @@ else
             Policies.CORS_PRODUCTION,
             policy =>
             {
-                policy.WithOrigins(@"http://localhost:7000").AllowAnyHeader().AllowAnyMethod();
+                policy.WithOrigins(@"http://localhost:8061").AllowAnyHeader().AllowAnyMethod();
             });
     });
 }

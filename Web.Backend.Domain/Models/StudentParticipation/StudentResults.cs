@@ -14,6 +14,6 @@ public class StudentResults
     public int Attempt { get; set; }
     [Column(TypeName = "TEXT")] public string? AttemptLink { get; set; }
     [Column(TypeName = "TIMESTAMP")] public DateTime Started { get; set; }
-    [Column(TypeName = "TIMESTAMP")] public DateTime? Ended { get; set; }
+    [Column(TypeName = "DATETIME")] public DateTime? Ended { get; set; }
     public int? Score { get; set; }
 }

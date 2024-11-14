@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Web.Backend.Domain.Data;
 
 #nullable disable
@@ -17,10 +17,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Web.Backend.Domain.Models.Course", b =>
                 {
@@ -45,7 +45,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("MinGrade")
                         .HasColumnType("DECIMAL(5, 2)");
@@ -64,7 +64,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("date");
 
                     b.Property<string>("SpecializationId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("UpdateDate")
                         .HasColumnType("date");
@@ -88,7 +88,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("CourseId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -98,7 +98,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<int>("Number")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -113,10 +113,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("CourseId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstitutionId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -129,23 +129,23 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("ChapterId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsMandatory")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("MaterialLink")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("MaterialNumber")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("MaterialTypeId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaxPoints")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("StudentResultsId")
                         .HasColumnType("VARCHAR(255)");
@@ -182,10 +182,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("CourseId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LecturerId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -235,7 +235,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(64)");
 
                     b.Property<string>("InstitutionId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -265,10 +265,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("LecturerId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SpecializationId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -288,7 +288,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -325,10 +325,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("InstitutionId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SpecializationId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -372,7 +372,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("CourseId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("DATE");
@@ -381,7 +381,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("SpecializationSessionId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("DATE");
@@ -405,7 +405,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CourseSessionId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("DATE");
@@ -417,10 +417,10 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("DATE");
 
                     b.Property<string>("StatusId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentResultsId")
                         .HasColumnType("VARCHAR(255)");
@@ -446,20 +446,20 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                     b.Property<DateOnly>("EnrollmentDate")
                         .HasColumnType("DATE");
 
-                    b.Property<double?>("FinalGrade")
+                    b.Property<decimal?>("FinalGrade")
                         .HasColumnType("DECIMAL(5, 2)");
 
                     b.Property<string>("SpecializationSessionId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly?>("StatusDate")
                         .HasColumnType("DATE");
 
                     b.Property<string>("StatusId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -481,7 +481,7 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<string>("SpecializationId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("DATE");
@@ -525,24 +525,25 @@ namespace Web.Backend.Domain.Data.EducationDbMigrations
                         .HasColumnType("VARCHAR(255)");
 
                     b.Property<int>("Attempt")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("AttemptLink")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("Ended")
-                        .HasColumnType("TIMESTAMP");
+                        .HasColumnType("DATETIME");
 
                     b.Property<string>("EnrolledCourseId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MaterialId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Score")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Started")
+                    b.Property<byte[]>("Started")
+                        .IsRequired()
                         .HasColumnType("TIMESTAMP");
 
                     b.HasKey("Id");
