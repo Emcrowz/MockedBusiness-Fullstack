@@ -1,6 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Core;
 using Utilities.Constants;
+using Web.Backend.Domain.Data;
+using Web.Backend.Domain.Repositories;
+using Web.Backend.Domain.Repositories.Contracts;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -8,20 +12,24 @@ IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile(Configurations.SETTINGS_DEV)
     .Build();
 
+// Serilog
 Logger log = new LoggerConfiguration()
     .ReadFrom.Configuration(config)
     .CreateLogger();
 Log.Logger = log;
 
-// Add services to the container.
+// EFCore
+string? connectionString = config.GetConnectionString(Connections.POSTGRES);
+builder.Services.AddDbContext<EducationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if(builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
+    // CORS
     builder.Services.AddCors(policies =>
     {
         policies.AddPolicy(Policies.CORS_ALLOWALL, policy => policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
@@ -29,19 +37,22 @@ if(builder.Environment.IsDevelopment())
 }
 else
 {
+    // CORS
     builder.Services.AddCors(policies =>
     {
         policies.AddPolicy(
-            Policies.CORS_PRODUCTION, 
-            policy => {
-                policy.WithOrigins(@"http://localhost:7000").AllowAnyHeader().AllowAnyMethod();
+            Policies.CORS_PRODUCTION,
+            policy =>
+            {
+                policy.WithOrigins(@"http://localhost:8061").AllowAnyHeader().AllowAnyMethod();
             });
     });
 }
 
+builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
+
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -49,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

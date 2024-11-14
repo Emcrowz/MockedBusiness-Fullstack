@@ -1,6 +1,6 @@
 ﻿namespace Utilities.Constants;
 
-public static class LoggingMessage
+public static class LoggingMessages
 {
     // General calls
     public static string ActionCall(string methodName) => $"CALLED | [{methodName}]";

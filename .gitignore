@@ -11,6 +11,9 @@
 *.sln.docstates
 
 appsettings.Development.json
+_ReSharper.Caches/
+bin/
+Debug/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
