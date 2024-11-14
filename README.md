@@ -1,7 +1,7 @@
-# Fullstack 'MockedBusiness' Project
+# Fullstack 'Learning platform (MOOC)' Project
 
 ## Theme / Core idea
-Currently project has no theme or idea. While developing database for the project idea will be worked out and updated accordingly.
+Projects idea is to implememt a online learning platform similar to uDemy, Coursera. 
 
 ## Tech Stack
 
@@ -9,9 +9,9 @@ Currently project has no theme or idea. While developing database for the projec
 
 **Server:** ASP.NET Core API
 
-**Database:** MSSQL (Docker image) using EFCore, MongoDB
+**Database:** MSSQL using EFCore
 
-**Utilities:** Serilog (Logging), xUnit, Shouldly, Moq (Testing)
+**Utilities:** Serilog (Logging), xUnit, NSubstitute
 
 ## Database Model Relationship Diagram
 
@@ -24,7 +24,8 @@ Currently project has no theme or idea. While developing database for the projec
 
 ## Roadmap
 
-- Develop a database for the project (entity and model representation diagram)
+- ~~Develop a database for the project (entity and model representation diagram)~~
+- Fully develop endpoints for the consumption
 - Create a API service module for the Blazor UI to interact with data via API
 
 ## Lessons Learned
@@ -34,8 +35,8 @@ Currently project has no theme or idea. While developing database for the projec
 - Blazor UI (Server) Development
 - Entity Framework Core (Code-First) Development
 - Database management with SQL using Scripts
-- MongoDb (NoSQL) Development
 - TailwindCSS UI Design
+- Docker images, containers and composition
 
 ## Appendix
 
